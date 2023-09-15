@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: prod-grade-api
+    restart: always
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+      args:
+        - USER_NAME=knight
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./api/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: prod-grade-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=tamreeny
+      - POSTGRES_USER=tamreeny
+      - POSTGRES_PASSWORD=tamreeny
+
+volumes:
+  api:
+  postgres_data:
