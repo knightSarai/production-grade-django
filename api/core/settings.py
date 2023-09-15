@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'knightauth',
 ]
 
 MIDDLEWARE = [
@@ -104,3 +105,8 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_HTTPONLY = False 
+SESSION_COOKIE_HTTPONLY = True
