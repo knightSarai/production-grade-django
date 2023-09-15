@@ -1,4 +1,6 @@
-# Production Grade Django A sample project to demonstrate how to build a production grade Django application.
+# Production Grade Django.
+
+A sample project to demonstrate how to build a production grade Django application.
 
 Current status: **In Progress**.
 
