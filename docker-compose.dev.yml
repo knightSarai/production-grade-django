@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    container_name: prod-grade-api
+    container_name: prod-grade-api-dev
     restart: always
     build:
       context: ./api
@@ -20,9 +20,9 @@ services:
       - db
   db:
     image: postgres
-    container_name: prod-grade-db
+    container_name: prod-grade-db-dev
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data_dev:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=tamreeny
       - POSTGRES_USER=tamreeny
@@ -30,4 +30,4 @@ services:
 
 volumes:
   api:
-  postgres_data:
+  postgres_data_dev:
