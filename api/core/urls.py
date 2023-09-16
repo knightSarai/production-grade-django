@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from django.http import HttpResponse
-from ninja import NinjaAPI
+from ninja import NinjaAPI, Router
 from ninja.security import django_auth
 
 from knightauth.api import register_router, session_auth_router
@@ -12,18 +11,23 @@ api = NinjaAPI(
     csrf=True,
 )
 
-api.add_router('auth', session_auth_router)
-api.add_router('auth/', register_router)
+test_router = Router()
 
 
-@api.get('test', url_name='test', auth=None)
-def test_get(request):
-    return {'message': 'Hello, world!'}
+@test_router.get("", auth=None)
+def test(request):
+    return {"hello": "world"}
 
 
-@api.post('test', url_name='test', auth=None)
+@test_router.post("", auth=None)
 def token_post(request):
     return {'message': 'Hello, world!'}
+
+
+api.add_router('auth', session_auth_router)
+api.add_router('auth/', register_router)
+api.add_router('test/', test_router)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
