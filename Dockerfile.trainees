@@ -1,7 +1,15 @@
-FROM nginx:latest
+FROM node:alpine AS build
 
-COPY dist/apps/trainees /usr/share/nginx/html
+WORKDIR /home/src/app
 
-EXPOSE 80
+COPY apps/trainees ./apps/trainees
+COPY package.json package-lock.json nx.json tsconfig.base.json jest.preset.js jest.config.ts ./
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm install
+RUN npx nx run trainees:build
+
+
+FROM nginx:latest AS deploy
+
+COPY --from=build /home/src/app/dist/apps/trainees /usr/share/nginx/html
+

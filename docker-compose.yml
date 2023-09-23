@@ -1,46 +1,46 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres
+    container_name: prod-grade-db
+    hostname: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db.prod
   api:
     container_name: prod-grade-api
+    hostname: api
     restart: always
     build:
-      context: ./api
+      context: api
     command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/api/staticfiles
       - media_volume:/home/app/api/mediafiles
-    expose:
-      - 8000
     env_file:
-      - ./.env.prod
+      - .env.prod
     depends_on:
       - db
-  db:
-    container_name: prod-grade-db
-    image: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.db.prod
+  trainees:
+    container_name: trainees
+    hostname: trainees
+    build:
+      context: .
+      dockerfile: Dockerfile.trainees
   nginx:
-    container_name: prod-grade-proxy
-    build: ./nginx
+    container_name: nginx
+    hostname: nginx
+    build: nginx
     volumes:
       - static_volume:/home/app/api/staticfiles
       - media_volume:/home/app/api/mediafiles
     ports:
-      - 1200:80
+      - 8080:8080
     depends_on:
       - api
       - trainees
-  trainees:
-    container_name: trainees
-    build:
-      context: .
-      dockerfile: Dockerfile.trainees
-    expose:
-      - 80
 
 volumes:
   postgres_data:
