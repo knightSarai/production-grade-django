@@ -2,15 +2,15 @@ FROM node:alpine AS build
 
 WORKDIR /home/src/app
 
-COPY apps/trainees ./apps/trainees
+COPY apps/trainers ./apps/trainers
 COPY package.json package-lock.json nx.json tsconfig.base.json jest.preset.js jest.config.ts ./
 
 RUN npm cache clean --force
 RUN npm install
-RUN npx nx run trainees:build
+RUN npx nx run trainers:build --baseHref /trainers/
 
 
 FROM nginx:latest AS deploy
 
-COPY --from=build /home/src/app/dist/apps/trainees /usr/share/nginx/html
+COPY --from=build /home/src/app/dist/apps/trainers /usr/share/nginx/html/
 

@@ -29,6 +29,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.trainees
+  trainers:
+    container_name: trainers 
+    hostname: trainers 
+    build:
+      context: .
+      dockerfile: Dockerfile.trainers
   nginx:
     container_name: nginx
     hostname: nginx
